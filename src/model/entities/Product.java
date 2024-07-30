@@ -1,6 +1,8 @@
-package entities;
+package model.entities;
 
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Product {
 
@@ -8,6 +10,7 @@ public class Product {
     private String category;
     private Double price;
     private LocalDateTime registerTime;
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public Product(String name, String category, Double price, LocalDateTime registerTime) {
         this.name = name;
@@ -48,17 +51,8 @@ public class Product {
         this.registerTime = registerTime;
     }
 
-    public String toString(int i) {
-        return "PRODUTO REGISTRADO:\n" +
-                i + ". " +
-                "Nome: " +
-                name +
-                ", Categoria: " +
-                category +
-                ", Preço: $ " +
-                price +
-                ", Data do registro: " +
-                registerTime +
-                "\n";
+    @Override
+    public String toString() {
+        return STR."Nome: \{name}, Categoria: \{category}, Preço: R$\{String.format("%.2f", price)}, Data do registro: \{registerTime.format(dtf)}";
     }
 }

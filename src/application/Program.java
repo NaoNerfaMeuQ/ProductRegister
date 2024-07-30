@@ -1,10 +1,8 @@
 package application;
 
-import entities.Product;
+import model.entities.Product;
+import model.entities.AindaVouNomear;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,13 +14,14 @@ public class Program {
     public static void main(String[] args) {
 
         String path = "C:\\Users\\marco\\OneDrive\\Desktop\\Cursos Programming\\Java " +
-                "projects\\Registros\\Registros\\src\\storage\\datastorage.json";
+                "projects\\Registros\\Registros\\src\\storage\\datastorage.txt";
         boolean exit = false;
+
         Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         List<Product> list = new ArrayList<>();
+        AindaVouNomear aindaVouNomear = new AindaVouNomear();
 
 
         while (!exit) {
@@ -40,48 +39,62 @@ public class Program {
                     sc.nextLine();
                     System.out.print("Quantidade de produtos a registrar: ");
                     int n = sc.nextInt();
+                    sc.nextLine();
 
                     for (int i = 1; i <= n; i++) {
-                        sc.nextLine();
-                        System.out.print("Nome do produto: ");
+                        System.out.println();
+                        System.out.print("Nome do produto #" + i + ": ");
                         String name = sc.nextLine();
                         System.out.print("Categoria do produto: ");
                         String category = sc.nextLine();
                         System.out.print("Preço do produto: ");
                         double price = sc.nextDouble();
                         sc.nextLine();
-                        System.out.print("Data de entrada (dd/MM/yyyy HH:mm): ");
-                        String registerTimeStr = sc.nextLine();
-                        LocalDateTime registerTime = LocalDateTime.parse(registerTimeStr, dtf);
+                        LocalDateTime registerTime = LocalDateTime.now();
                         list.add(new Product(name, category, price, registerTime));
+                        System.out.println();
+                    }
+
+                    // Exibe os produtos enumerados
+                    for (int i = 0; i < list.size(); i++) {
+                        System.out.println((i + 1) + ") " + list.get(i));
                     }
                     System.out.println();
 
-                    for (int j = 0; j < list.size(); j++) {
-                        System.out.println(list.get(j).toString(j + 1));
-                    }
-                    System.out.println();
-                    System.out.print("Deseja sobrescrever o arquivo existente? (s/n): ");
-                    char ch = sc.nextLine().charAt(0);
-                    boolean fileOption = ch == 's';
+                    System.out.print("Deseja alterar algum produto? (s/n): ");
+                    char ch = sc.next().charAt(0);
+                    if (ch == 's') {
 
-                    try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, !fileOption))) {
-                        bw.write("[\n"); // Começar o array JSON
-                        for (int i = 0; i < list.size(); i++) {
-                            Product product = list.get(i);
-                            String json = toJsonString(product);
-                            bw.write(json);
-                            if (i < list.size() - 1) {
-                                bw.write(",\n"); // Adicionar vírgula entre os objetos JSON
-                            } else {
-                                bw.write("\n"); // Não adicionar vírgula após o último objeto JSON
-                            }
+                        System.out.print("Quantidade de produtos a editar: ");
+                        int n2 = sc.nextInt();
+                        sc.nextLine();
+                        System.out.println();
+
+                        for (int o = 0; o < list.size(); o++) {
+                            System.out.println((o + 1) + ") " + list.get(o));
                         }
-                    } catch (IOException e) {
-                        String err = "ERROR: " + e.getMessage();
+
+                        for (int i = 0; i <= n2; i++) {
+
+
+                            System.out.println();
+                            System.out.print("Qual produto deseja editar? ");
+                            int productEditIndex = sc.nextInt() - 1;
+                            sc.nextLine();
+                            aindaVouNomear.editProduct(list, productEditIndex, sc);
+                            System.out.println();
+                            System.out.println(i + ") " + list.get(i));
+
+
+
+                        }
+
+//                        System.out.println();
+
                     }
-                    System.out.println();
+
                     break;
+
                 case 5:
                     System.out.println("Finalizando...");
                     exit = true;
@@ -94,13 +107,5 @@ public class Program {
         }
         sc.close();
     }
-
-    private static String toJsonString(Product product) {
-        return "{\n" +
-                "  \"Nome\": \"" + product.getName() + "\",\n" +
-                "  \"Categoria\": \"" + product.getCategory() + "\",\n" +
-                "  \"Preço\": " + product.getPrice() + ",\n" +
-                "  \"Hora de Registro\": \"" + product.getRegisterTime().toString() + "\"\n" +
-                "}";
-    }
 }
+
