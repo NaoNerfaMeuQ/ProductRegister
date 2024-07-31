@@ -1,0 +1,6 @@
+Nome, Categoria, Preço, Quantidade, Data do Registro
+
+Ração,Alimento,249.00,25.0,31/07/2024 18:07
+Alpiste,Passáros,22.50,15.0,31/07/2024 18:46
+Coleira,Passáros,22.50,15.0,31/07/2024 18:46
+

@@ -3,8 +3,7 @@ package model.entities;
 import java.util.List;
 import java.util.Scanner;
 
-public class AindaVouNomear {
-
+public class ProductManager {
 
 
     public void editProduct(List<Product> list, int productEditIndex, Scanner sc) {
@@ -32,12 +31,29 @@ public class AindaVouNomear {
             }
             System.out.println();
 
+            System.out.print("Nova quantidade do produto (ou deixe em branco para manter): ");
+            String newQuantity = sc.nextLine();
+            if (!newQuantity.isEmpty()) {
+                productToEdit.setQuantity(Double.parseDouble(newQuantity));
+            }
+            System.out.println();
+
             System.out.println("Lista atualizada!");
             System.out.println("Produto atualizado: " + productToEdit);
         } else {
-            System.out.println("número de produto inválido");
+            System.out.println("Número de produto inválido");
             System.out.println();
         }
     }
 
+    public void deleteProduct(List<Product> list, int productDeleteIndex, Scanner sc) {
+        if (productDeleteIndex >= 0 && productDeleteIndex < list.size()) {
+            Product productToDelete = list.get(productDeleteIndex);
+
+            list.remove(productDeleteIndex);
+        } else {
+            System.out.println("Número de produto inválido");
+        }
+
+    }
 }

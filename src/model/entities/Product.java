@@ -4,18 +4,20 @@ import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Product {
+public class Product implements Comparable<Product> {
 
     private String name;
     private String category;
     private Double price;
+    private Double quantity;
     private LocalDateTime registerTime;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    public Product(String name, String category, Double price, LocalDateTime registerTime) {
+    public Product(String name, String category, Double price, Double quantity, LocalDateTime registerTime) {
         this.name = name;
         this.category = category;
         this.price = price;
+        this.quantity = quantity;
         this.registerTime = registerTime;
     }
 
@@ -43,6 +45,14 @@ public class Product {
         this.price = price;
     }
 
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
     public LocalDateTime getRegisterTime() {
         return registerTime;
     }
@@ -53,6 +63,35 @@ public class Product {
 
     @Override
     public String toString() {
-        return STR."Nome: \{name}, Categoria: \{category}, Preço: R$\{String.format("%.2f", price)}, Data do registro: \{registerTime.format(dtf)}";
+        return STR."Nome: \{name},\n   Categoria: \{category},\n   Preço: R$\{String.format("%.2f", price)},\n   Quantidade em estoque: \{quantity},\n   Data do registro: \{registerTime.format(dtf)}\n";
+    }
+
+    public String toCSV() {
+        return String.format("%s,%s,%.2f,%.1f,%s", name, category, price, quantity, registerTime.format(dtf));
+    }
+    @Override
+    public int compareTo(Product other) {
+
+        int nameComparison = this.name.compareTo(other.name);
+        if (nameComparison != 0) {
+            return nameComparison;
+        }
+        int categoryComparison = this.category.compareTo(other.category);
+        if (categoryComparison != 0) {
+            return categoryComparison;
+        }
+
+        int priceComparison = Double.compare(this.price, other.price);
+        if (priceComparison != 0) {
+            return priceComparison;
+        }
+
+        int quantityComparison = Double.compare(this.quantity, other.quantity);
+        if (quantityComparison != 0) {
+            return quantityComparison;
+        }
+
+        return this.registerTime.compareTo(other.registerTime);
+
     }
 }
