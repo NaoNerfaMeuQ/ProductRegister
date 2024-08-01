@@ -30,7 +30,7 @@ public class Program {
             System.out.println("Quantidade de produtos registrados até o momento: " + list.size());
             System.out.println("1. Criar produto");
             System.out.println("2. Deletar produto");
-            System.out.println("3. Mostrar produtos");
+            System.out.println("3. Atualizar produtos");
             System.out.println("4. Salvar produtos");
             System.out.println("5. Importar produtos");
             System.out.println("6. Sair");
@@ -143,15 +143,45 @@ public class Program {
 
 
                 case 3: //Mostrar os produtos criados
-                    if (list.isEmpty()) {
-                        System.out.println();
-                        System.out.println("Lista vazia, crie produtos para acessar essa opção");
-                        System.out.println();
-                    } else {
-                        System.out.println();
-                        for (int q = 0; q < list.size(); q++) {
-                            System.out.println((q + 1) + ") " + list.get(q));
+                    //TODO COLOCAR O COLECTIONS.SORT PARA AJUSTAR A LISTA
+                    for (int o = 0; o < list.size(); o++) {
+                        System.out.println((o + 1) + ") " + list.get(o));
+                    }
+                    if (!list.isEmpty()) {
+                        System.out.print("Deseja alterar algum produto? (s/n): ");
+                        char ch2 = sc.next().charAt(0);
+                        if (ch2 == 's') {
+                            System.out.println();
+                            if (list.size() > 0) {
+                                System.out.println();
+                                System.out.print("Quantidade de produtos a editar: ");
+                                int n2 = sc.nextInt();
+                                sc.nextLine();
+                                System.out.println();
+                                for (int o = 0; o < list.size(); o++) {
+                                    System.out.println((o + 1) + ") " + list.get(o));
+                                }
+                                for (int i = 0; i < n2; i++) {
+                                    System.out.println();
+                                    System.out.print("Qual produto deseja editar? ");
+                                    int productEditIndex = sc.nextInt() - 1;
+                                    sc.nextLine();
+                                    productManager.editProduct(list, productEditIndex, sc);
+                                    System.out.println();
+//                          System.out.println(i + ") " + list.get(i + 1));
+//                                    for (int o = 0; o < list.size(); o++) {
+//                                        System.out.println((o + 1) + ") " + list.get(o));
+//                                        System.out.println();
+//                                    }
+                                }
+                            } else {
+                                System.out.println("Não há produtos para deletar!");
+                                System.out.println("Por favor, adicione pelo menu ou pelo arquivo.");
+                            }
                         }
+                    } else {
+                        System.out.println("Não há nada na lista!");
+                        System.out.println();
                     }
 
                     break;
@@ -264,4 +294,5 @@ public class Program {
         sc.close();
     }
 }
+
 

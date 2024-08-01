@@ -39,7 +39,7 @@ public class ProductManager {
             System.out.println();
 
             System.out.println("Lista atualizada!");
-            System.out.println("Produto atualizado: " + productToEdit);
+            System.out.println("Produto atualizado: \n" + productToEdit);
         } else {
             System.out.println("Número de produto inválido");
             System.out.println();
